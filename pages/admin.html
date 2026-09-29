@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineX Admin Portal | Comprehensive Management</title>
+  <meta name="description" content="CineX Admin Portal - Management of Movies, Hero Slider Carousel, Experiences, Offers, and System Configuration.">
+  
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <nav class="admin-navbar">
+    <div class="container admin-nav-container">
+      <a href="../index.html" class="brand-logo">
+        <span>CINEX</span><span class="logo-accent">•</span> <span class="admin-badge">ADMIN PORTAL</span>
+      </a>
+
+      <div class="admin-user-info">
+        <span class="admin-user-name" id="adminUserName">Admin</span>
+        <button class="btn btn-sm btn-secondary" onclick="Auth.logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container admin-main-content">
+
+    <div class="admin-header-banner">
+      <div>
+        <h1 class="admin-title">System Management Dashboard</h1>
+        <p class="admin-subtitle">Manage CineX catalog movies, homepage Hero Slider carousel, luxury auditorium experiences, and promotional offers.</p>
+      </div>
+    </div>
+
+    <div class="admin-tabs">
+      <button id="tabBtn_movies" class="admin-tab-btn active" onclick="switchTab('movies')">🎬 Manage Movies</button>
+      <button id="tabBtn_carousel" class="admin-tab-btn" onclick="switchTab('carousel')">🎠 Hero Carousel</button>
+      <button id="tabBtn_experiences" class="admin-tab-btn" onclick="switchTab('experiences')">🛋️ Manage Experiences</button>
+      <button id="tabBtn_offers" class="admin-tab-btn" onclick="switchTab('offers')">🏷️ Manage Offers &amp; Giveaways</button>
+      <button id="tabBtn_shows_locations" class="admin-tab-btn" onclick="switchTab('shows_locations')">🏛️ Shows &amp; Locations</button>
+      <button id="tabBtn_concessions" class="admin-tab-btn" onclick="switchTab('concessions')">🍿 Manage Concessions (F&amp;B)</button>
+    </div>
+
+    <section id="tab_movies" class="admin-tab-section active">
+      <div class="section-top-bar">
+        <h2 class="tab-heading">Movies Catalog</h2>
+        <button class="btn btn-primary" onclick="openMovieFormModal()">+ Add New Movie</button>
+      </div>
+
+      <div class="data-table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Poster</th>
+              <th>Title</th>
+              <th>Language</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Hero Slide</th>
+              <th>Release Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="moviesTableBody">
+            <tr>
+              <td colspan="8" class="loading-cell">Loading movies...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab_carousel" class="admin-tab-section" style="display: none;">
+      <div class="section-top-bar">
+        <h2 class="tab-heading">Homepage Hero Carousel Slides</h2>
+        <span style="font-size: 0.85rem; color: #aaa;">Active slides featured on the CineX landing page slider</span>
+      </div>
+
+      <div class="data-table-card" style="margin-bottom: 24px;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Hero Banner / Backdrop</th>
+              <th>Movie Title</th>
+              <th>Status</th>
+              <th>Quick Actions</th>
+            </tr>
+          </thead>
+          <tbody id="carouselTableBody">
+            <tr>
+              <td colspan="5" class="loading-cell">Loading hero slider movies...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab_experiences" class="admin-tab-section" style="display: none;">
+      <div class="section-top-bar">
+        <h2 class="tab-heading">Experiences & Formats</h2>
+        <button class="btn btn-primary" onclick="openExperienceFormModal()">+ Add New Experience</button>
+      </div>
+
+      <div class="data-table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Thumbnail</th>
+              <th>Title</th>
+              <th>Description Preview</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="experiencesTableBody">
+            <tr>
+              <td colspan="4" class="loading-cell">Loading experiences...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab_offers" class="admin-tab-section" style="display: none;">
+      <div class="section-top-bar">
+        <h2 class="tab-heading">Offers & Promotions</h2>
+        <button class="btn btn-primary" onclick="openOfferFormModal()">+ Add New Offer</button>
+      </div>
+
+      <div class="offers-grid" id="offersGridContainer">
+      </div>
+    </section>
+
+    <section id="tab_shows_locations" class="admin-tab-section" style="display: none;">
+      <div class="section-top-bar" style="margin-top: 10px;">
+        <div>
+          <h2 class="tab-heading">Manage Cinema Locations</h2>
+          <span style="font-size: 0.85rem; color: #aaa;">Configure multiplex theaters, locations, and screen counts</span>
+        </div>
+        <button class="btn btn-primary" onclick="openCinemaFormModal()">+ Add New Cinema</button>
+      </div>
+
+      <div class="data-table-card" style="margin-bottom: 36px;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cinema Name</th>
+              <th>City / Address</th>
+              <th>Total Screens / Halls</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cinemasTableBody">
+            <tr>
+              <td colspan="5" class="loading-cell">Loading cinema locations...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-top-bar">
+        <div>
+          <h2 class="tab-heading">Manage Scheduled Showtimes</h2>
+          <span style="font-size: 0.85rem; color: #aaa;">Schedule sessions for movies across cinema locations and experience formats</span>
+        </div>
+        <button class="btn btn-primary" onclick="openShowtimeFormModal()">+ Schedule New Showtime</button>
+      </div>
+
+      <div class="admin-shows-filter-bar">
+        <div class="filter-group">
+          <label for="adminShowDateFilter">Filter Date:</label>
+          <input type="date" id="adminShowDateFilter" class="admin-input filter-input" onchange="renderShowtimesTable()">
+        </div>
+        <div class="filter-group">
+          <label for="adminShowMovieFilter">Filter Movie:</label>
+          <select id="adminShowMovieFilter" class="admin-input filter-input" onchange="renderShowtimesTable()">
+            <option value="ALL">All Movies</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="adminShowCinemaFilter">Filter Cinema:</label>
+          <select id="adminShowCinemaFilter" class="admin-input filter-input" onchange="renderShowtimesTable()">
+            <option value="ALL">All Cinemas</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="resetAdminShowFilters()">Reset Filters</button>
+      </div>
+
+      <div class="data-table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Movie</th>
+              <th>Cinema &amp; Screen</th>
+              <th>Experience Format</th>
+              <th>Active Time Slots</th>
+              <th>Base Ticket Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="showsTableBody">
+            <tr>
+              <td colspan="7" class="loading-cell">Loading scheduled showtimes...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab_concessions" class="admin-tab-section" style="display: none;">
+      <div class="section-top-bar">
+        <div>
+          <h2 class="tab-heading">Food &amp; Beverages (Concessions) Catalog</h2>
+          <span style="font-size: 0.85rem; color: #aaa;">Manage snacks, popcorn combos, warm kitchen food items, and drinks available for moviegoers.</span>
+        </div>
+        <button class="btn btn-primary" onclick="openConcessionFormModal()">+ Add Concession Item</button>
+      </div>
+
+      <div class="concession-filter-bar" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+        <button class="filter-pill active" onclick="filterAdminConcessions('ALL', this)">All Items</button>
+        <button class="filter-pill" onclick="filterAdminConcessions('POPCORN', this)">🍿 Popcorn</button>
+        <button class="filter-pill" onclick="filterAdminConcessions('HOT_KITCHEN', this)">🍔 Hot Kitchen</button>
+        <button class="filter-pill" onclick="filterAdminConcessions('COMBO', this)">🥤 Combos</button>
+        <button class="filter-pill" onclick="filterAdminConcessions('DESSERTS', this)">🍰 Desserts</button>
+        <button class="filter-pill" onclick="filterAdminConcessions('BEVERAGE', this)">🥤 Beverages</button>
+      </div>
+
+      <div class="data-table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Item Name</th>
+              <th>Category</th>
+              <th>Price (LKR)</th>
+              <th>Description</th>
+              <th>Stock Availability</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="concessionsTableBody">
+            <tr>
+              <td colspan="7" class="loading-cell">Loading food &amp; beverage items...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="movieModal" class="modal-backdrop" aria-hidden="true" style="display: none;">
+    <div class="admin-modal-card movie-modal-card">
+      <div class="admin-modal-header">
+        <h3 id="movieModalTitle">Add New Movie</h3>
+        <button class="modal-close-btn" onclick="closeModal('movieModal')">&times;</button>
+      </div>
+      <form id="movieForm" onsubmit="handleSaveMovie(event)">
+        <input type="hidden" id="movieId">
+        <div class="movie-form-layout">
+          <div class="movie-form-col">
+            <div class="form-group">
+              <label for="mTitle">Movie Title *</label>
+              <input type="text" id="mTitle" class="admin-input" required placeholder="e.g. SPIDER-MAN: BRAND NEW DAY">
+            </div>
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="mDuration">Duration (Mins) *</label>
+                <input type="number" id="mDuration" class="admin-input" required value="140" min="1">
+              </div>
+              <div class="form-group">
+                <label for="mLanguage">Language *</label>
+                <input type="text" id="mLanguage" class="admin-input" required value="English">
+              </div>
+            </div>
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="movieGenre">Movie Genres</label>
+                <select id="movieGenre" class="admin-input">
+                  <option value="ACTION / ADVENTURE">ACTION / ADVENTURE</option>
+                  <option value="SCI-FI / FANTASY">SCI-FI / FANTASY</option>
+                  <option value="HORROR / THRILLER">HORROR / THRILLER</option>
+                  <option value="COMEDY / DRAMA">COMEDY / DRAMA</option>
+                  <option value="ANIMATION / FAMILY">ANIMATION / FAMILY</option>
+                  <option value="ROMANCE">ROMANCE</option>
+                  <option value="CRIME / MYSTERY">CRIME / MYSTERY</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="movieFormats">Formats &amp; Sound Experience</label>
+                <select id="movieFormats" class="admin-input">
+                  <option value="DOLBY ATMOS / IMAX 3D">DOLBY ATMOS / IMAX 3D</option>
+                  <option value="DOLBY ATMOS / 2D">DOLBY ATMOS / 2D</option>
+                  <option value="DOLBY 7.1 / 3D">DOLBY 7.1 / 3D</option>
+                  <option value="DOLBY 7.1 / 2D">DOLBY 7.1 / 2D</option>
+                  <option value="4DX / DOLBY ATMOS">4DX / DOLBY ATMOS</option>
+                  <option value="STANDARD DIGITAL">STANDARD DIGITAL</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="mDirectors">Director(s)</label>
+                <input type="text" id="mDirectors" class="admin-input" placeholder="e.g. Destin Daniel Cretton">
+              </div>
+              <div class="form-group">
+                <label for="mClassification">Age Rating / Classification *</label>
+                <select id="mClassification" class="admin-input" required>
+                  <option value="U">U (Universal)</option>
+                  <option value="PG">PG</option>
+                  <option value="PG-13">PG-13</option>
+                  <option value="15+">15+</option>
+                  <option value="18+">18+</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="mCast">Cast Members</label>
+              <input type="text" id="mCast" class="admin-input" placeholder="e.g. Tom Holland, Zendaya, Jacob Batalon">
+            </div>
+          </div>
+
+          <div class="movie-form-col">
+            <div class="form-group hero-checkbox-box">
+              <label class="hero-checkbox-label">
+                <input type="checkbox" id="mIsFeatured" class="hero-checkbox">
+                <span>Feature in Homepage Hero Carousel Slider</span>
+              </label>
+            </div>
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="mFeaturedOrder">Slide Priority / Order</label>
+                <input type="number" id="mFeaturedOrder" class="admin-input" value="1" min="1">
+              </div>
+              <div class="form-group">
+                <label for="mBackdropUrl">Details Hero Backdrop URL</label>
+                <input type="url" id="mBackdropUrl" class="admin-input" placeholder="https://images.unsplash.com/...">
+              </div>
+            </div>
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="mStatus">Status *</label>
+                <select id="mStatus" class="admin-input" required>
+                  <option value="NOW_SHOWING">NOW SHOWING</option>
+                  <option value="COMING_SOON">COMING SOON</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="mReleaseDate">Release Date *</label>
+                <input type="date" id="mReleaseDate" class="admin-input" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="mPosterUrl">Poster Image URL *</label>
+              <input type="url" id="mPosterUrl" class="admin-input" required placeholder="https://images.unsplash.com/...">
+            </div>
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label for="mBannerUrl">Card Banner Image URL</label>
+                <input type="url" id="mBannerUrl" class="admin-input" placeholder="https://images.unsplash.com/...">
+              </div>
+              <div class="form-group">
+                <label for="mTrailerUrl">Trailer YouTube URL</label>
+                <input type="url" id="mTrailerUrl" class="admin-input" placeholder="https://www.youtube.com/watch?v=...">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="mDescription">Full Plot Synopsis *</label>
+          <textarea id="mDescription" class="admin-input" rows="3" required placeholder="Enter full plot summary..."></textarea>
+        </div>
+
+        <div class="admin-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('movieModal')">CANCEL</button>
+          <button type="submit" class="btn btn-primary">SAVE MOVIE</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="experienceModal" class="modal-backdrop" aria-hidden="true" style="display: none;">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <h3 id="expModalTitle">Add New Experience</h3>
+        <button class="modal-close-btn" onclick="closeModal('experienceModal')">&times;</button>
+      </div>
+      <form id="experienceForm" onsubmit="handleSaveExperience(event)">
+        <input type="hidden" id="expId">
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="eTitle">Title *</label>
+            <input type="text" id="eTitle" class="admin-input" required placeholder="e.g. DIRECTOR'S LOUNGE">
+          </div>
+          <div class="form-group span-2">
+            <label for="eDescription">Description *</label>
+            <textarea id="eDescription" class="admin-input" rows="3" required placeholder="Luxurious plush leather recliners..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="eIconUrl">Icon / Emoji</label>
+            <input type="text" id="eIconUrl" class="admin-input" placeholder="🛋️">
+          </div>
+          <div class="form-group">
+            <label for="eBannerUrl">Banner Image URL *</label>
+            <input type="url" id="eBannerUrl" class="admin-input" required placeholder="https://images.unsplash.com/...">
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('experienceModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Experience</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="offerModal" class="modal-backdrop" aria-hidden="true" style="display: none;">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <h3 id="offerModalTitle">Add New Offer</h3>
+        <button class="modal-close-btn" onclick="closeModal('offerModal')">&times;</button>
+      </div>
+      <form id="offerForm" onsubmit="handleSaveOffer(event)">
+        <input type="hidden" id="oId">
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label for="oTitle">Offer Title *</label>
+            <input type="text" id="oTitle" class="admin-input" required placeholder="e.g. 20% OFF WEEKDAY SPECIAL">
+          </div>
+          <div class="form-group">
+            <label for="oSubtitle">Subtitle *</label>
+            <input type="text" id="oSubtitle" class="admin-input" required placeholder="TUESDAY & WEDNESDAY MADNESS">
+          </div>
+          <div class="form-group">
+            <label for="oDiscount">Discount % *</label>
+            <input type="number" step="0.1" id="oDiscount" class="admin-input" required value="20.0" min="0" max="100">
+          </div>
+          <div class="form-group span-2">
+            <label for="oDescription">Description *</label>
+            <textarea id="oDescription" class="admin-input" rows="3" required placeholder="Details..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="oBannerUrl">Banner Image URL *</label>
+            <input type="url" id="oBannerUrl" class="admin-input" required placeholder="https://images.unsplash.com/...">
+          </div>
+          <div class="form-group">
+            <label for="oValidUntil">Valid Until Date</label>
+            <input type="date" id="oValidUntil" class="admin-input">
+          </div>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('offerModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Offer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="cinemaModal" class="modal-backdrop" aria-hidden="true" style="display: none;">
+    <div class="admin-modal-card">
+      <div class="admin-modal-header">
+        <h3 id="cinemaModalTitle">Add New Cinema Location</h3>
+        <button class="modal-close-btn" onclick="closeModal('cinemaModal')">&times;</button>
+      </div>
+      <form id="cinemaForm" onsubmit="handleSaveCinema(event)">
+        <input type="hidden" id="cinemaId">
+        <div class="form-group">
+          <label for="cName">Cinema Name *</label>
+          <input type="text" id="cName" class="admin-input" required placeholder="e.g. CineX Multiplex - Colombo City Centre">
+        </div>
+        <div class="form-group">
+          <label for="cLocation">City / Address Location *</label>
+          <input type="text" id="cLocation" class="admin-input" required placeholder="e.g. Colombo 02">
+        </div>
+        <div class="form-group">
+          <label for="cTotalScreens">Total Halls / Screens Count *</label>
+          <input type="number" id="cTotalScreens" class="admin-input" required value="4" min="1">
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('cinemaModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Cinema</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="showtimeModal" class="modal-backdrop" aria-hidden="true" style="display: none;">
+    <div class="admin-modal-card bulk-scheduler-modal">
+      <div class="admin-modal-header">
+        <div>
+          <h3 id="showtimeModalTitle">Schedule Movie Screenings (Multi-Slot Bulk Scheduler)</h3>
+          <span style="font-size: 0.8rem; color: #aaa;">Generate multi-day showtimes across cinema locations without re-entering movies</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('showtimeModal')">&times;</button>
+      </div>
+
+      <form id="bulkShowForm" onsubmit="handleGenerateAndPublishShows(event)">
+        <div class="bulk-form-container">
+          
+          <div class="bulk-step-card">
+            <div class="step-header">
+              <span class="step-num">1</span>
+              <h4>Select Existing Movie</h4>
+            </div>
+            <div class="form-group">
+              <select id="bMovieSelect" class="admin-input" required onchange="onBulkMovieChange()">
+              </select>
+            </div>
+            <div id="bMoviePreviewCard" class="bulk-movie-preview-card">
+              <img id="bMoviePoster" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=200&auto=format&fit=crop&q=80" alt="Movie Poster" class="bulk-preview-poster">
+              <div class="bulk-preview-info">
+                <div id="bMovieTitle" class="bulk-preview-title">LOADING...</div>
+                <div id="bMovieMeta" class="bulk-preview-meta">Genre • Duration • Format</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bulk-step-card">
+            <div class="step-header">
+              <span class="step-num">2</span>
+              <h4>Target Dates</h4>
+              <div class="preset-btns-bar">
+                <button type="button" class="btn-preset-sm" onclick="setBulkDatePreset(7)">+7 Days</button>
+                <button type="button" class="btn-preset-sm" onclick="setBulkDatePreset(14)">+14 Days</button>
+              </div>
+            </div>
+
+            <div class="date-mode-toggle-group" style="margin-bottom: 14px; display: flex; gap: 20px; align-items: center; background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+              <label class="radio-label" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; color: #fff; font-size: 0.9rem;">
+                <input type="radio" name="bDateMode" value="RANGE" checked onchange="toggleBulkDateMode('RANGE')">
+                <span>📅 Date Range</span>
+              </label>
+              <label class="radio-label" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; color: #fff; font-size: 0.9rem;">
+                <input type="radio" name="bDateMode" value="SPECIFIC" onchange="toggleBulkDateMode('SPECIFIC')">
+                <span>🗓️ Specific Dates</span>
+              </label>
+            </div>
+
+            <div id="bDateRangeContainer" class="form-row-2col">
+              <div class="form-group">
+                <label for="bStartDate">Start Date *</label>
+                <input type="date" id="bStartDate" class="admin-input" onchange="updateBulkSummary()">
+              </div>
+              <div class="form-group">
+                <label for="bEndDate">End Date *</label>
+                <input type="date" id="bEndDate" class="admin-input" onchange="updateBulkSummary()">
+              </div>
+            </div>
+
+            <div id="bSpecificDatesContainer" class="specific-dates-wrapper" style="display: none;">
+              <div class="time-add-row" style="display: flex; gap: 10px; margin-bottom: 12px;">
+                <input type="date" id="bSpecificDateInput" class="admin-input" style="max-width: 220px;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="addSpecificDateFromInput()">+ Add Date</button>
+              </div>
+              <div id="bSpecificDatesTagsContainer" class="time-tags-container">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="bulk-step-card">
+            <div class="step-header">
+              <span class="step-num">3</span>
+              <h4>Locations &amp; Cinema Halls</h4>
+            </div>
+            <div id="bCinemasContainer" class="bulk-cinemas-grid">
+            </div>
+          </div>
+
+          <div class="bulk-step-card">
+            <div class="step-header">
+              <span class="step-num">4</span>
+              <h4>Experience Formats</h4>
+            </div>
+            <div id="bExperiencesContainer" class="bulk-pills-container">
+            </div>
+          </div>
+
+          <div class="bulk-step-card">
+            <div class="step-header">
+              <span class="step-num">5</span>
+              <h4>Showtime Slot Tags &amp; Pricing</h4>
+              <div class="preset-btns-bar">
+                <button type="button" class="btn-preset-sm" onclick="applyStandardTimeSlotsPreset()">Standard 4 Shows (10:30 AM, 01:45 PM, 05:15 PM, 08:30 PM)</button>
+              </div>
+            </div>
+            
+            <div class="time-add-row" style="display: flex; gap: 10px; margin-bottom: 12px;">
+              <input type="time" id="bTimeInput" class="admin-input" style="max-width: 180px;" value="10:30">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="addBulkTimeSlotFromInput()">+ Add Time Slot</button>
+            </div>
+
+            <div id="bTimeTagsContainer" class="time-tags-container">
+            </div>
+
+            <div class="form-group" style="margin-top: 16px;">
+              <label for="bTicketPrice">Ticket Base Price (LKR) *</label>
+              <input type="number" step="0.01" id="bTicketPrice" class="admin-input" required value="1500.00" min="0" onchange="updateBulkSummary()">
+            </div>
+          </div>
+
+        </div>
+
+        <div id="bulkSummaryBox" class="bulk-summary-bar">
+          ⚡ Ready to generate showtime sessions...
+        </div>
+
+        <div class="admin-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('showtimeModal')">Cancel</button>
+          <button type="submit" id="btnGenerateBulkShows" class="btn btn-primary btn-lg">Generate &amp; Publish Shows</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="addSlotModal" class="modal-backdrop" aria-hidden="true" style="display: none;">
+    <div class="admin-modal-card" style="max-width: 460px;">
+      <div class="admin-modal-header">
+        <h3>+ Add Single Showtime Slot</h3>
+        <button class="modal-close-btn" onclick="closeModal('addSlotModal')">&times;</button>
+      </div>
+      <form id="addSlotForm" onsubmit="handleSaveSingleSlot(event)">
+        <input type="hidden" id="addSlotDate">
+        <input type="hidden" id="addSlotMovieId">
+        <input type="hidden" id="addSlotTheaterId">
+        <input type="hidden" id="addSlotScreenId">
+        <input type="hidden" id="addSlotExperience">
+        <input type="hidden" id="addSlotPrice">
+        
+        <div class="form-group">
+          <label>Screening Details</label>
+          <div id="addSlotInfoText" style="font-size: 0.88rem; color: #ddd; padding: 12px 14px; background: rgba(255,255,255,0.06); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); line-height: 1.5;">
+          </div>
+        </div>
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="addSlotTimeInput">Extra Showtime Slot Time *</label>
+          <input type="time" id="addSlotTimeInput" class="admin-input" required value="21:30">
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('addSlotModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">+ Add Slot</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="concessionModal" class="modal-backdrop" aria-hidden="true" style="display: none;">
+    <div class="admin-modal-card" style="max-width: 550px;">
+      <div class="admin-modal-header">
+        <h3 id="concessionModalTitle">+ Add Concession Item</h3>
+        <button class="modal-close-btn" onclick="closeModal('concessionModal')">&times;</button>
+      </div>
+      <form id="concessionForm" onsubmit="handleSaveConcession(event)">
+        <input type="hidden" id="cId">
+        
+        <div class="form-group">
+          <label for="cName">Item Name *</label>
+          <input type="text" id="cName" class="admin-input" required placeholder="e.g. Popcorn Jumbo - Cheese">
+        </div>
+
+        <div class="form-row-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
+          <div class="form-group">
+            <label for="cCategory">Category *</label>
+            <select id="cCategory" class="admin-input" required>
+              <option value="POPCORN">🍿 POPCORN</option>
+              <option value="HOT_KITCHEN">🍔 HOT KITCHEN</option>
+              <option value="COMBO">🥤 COMBO</option>
+              <option value="DESSERTS">🍰 DESSERTS</option>
+              <option value="BEVERAGE">🥤 BEVERAGE</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cPrice">Price (LKR) *</label>
+            <input type="number" step="0.01" id="cPrice" class="admin-input" required placeholder="1200.00" min="0">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="cImageUrl">Image URL *</label>
+          <input type="url" id="cImageUrl" class="admin-input" required placeholder="https://images.unsplash.com/..." oninput="updateConcessionImagePreview(this.value)">
+          <div class="concession-img-preview-box" style="margin-top: 8px; border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px; height: 120px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #0f172a;">
+            <img id="cImagePreview" src="" alt="Image Preview" style="max-height: 100%; max-width: 100%; object-fit: contain; display: none;">
+            <span id="cImagePlaceholder" style="color: #64748b; font-size: 0.85rem;">Enter image URL to view preview</span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="cDescription">Description</label>
+          <textarea id="cDescription" class="admin-input" rows="3" placeholder="Crispy golden popcorn seasoned with savory cheddar cheese."></textarea>
+        </div>
+
+        <div class="form-group" style="margin-top: 14px; display: flex; align-items: center; gap: 10px;">
+          <input type="checkbox" id="cIsAvailable" checked style="width: 18px; height: 18px; cursor: pointer;">
+          <label for="cIsAvailable" style="cursor: pointer; margin-bottom: 0;">In Stock / Available for Sale</label>
+        </div>
+
+        <div class="admin-modal-footer" style="margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('concessionModal')">Cancel</button>
+          <button type="submit" id="btnSaveConcession" class="btn btn-primary">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

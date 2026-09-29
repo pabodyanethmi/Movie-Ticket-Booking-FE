@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Make Your Payment | Scope Cinemas</title>
+  <meta name="description" content="Secure Checkout and Instant E-Ticket Booking for Scope Cinemas.">
+  
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:* https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.payhere.lk https://*.payhere.lk; frame-src 'self' https://*.payhere.lk https://sandbox.payhere.lk; connect-src 'self' http://localhost:* https://*.payhere.lk https://sandbox.payhere.lk; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:;">
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/checkout.css">
+  
+  <script type="text/javascript" src="https://sandbox.payhere.lk/lib/payhere.js"></script>
+</head>
+<body class="checkout-page-body">
+
+  <div class="checkout-subheader-bar">
+    <div class="checkout-subheader-container">
+      <a href="concessions.html" class="checkout-back-link">
+        &lt; MAKE YOUR PAYMENT
+      </a>
+      
+      <div class="checkout-timer-box">
+        ⏱ TIME LEFT: <span id="checkoutTimer">04:43</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="checkout-main-container">
+    <div class="checkout-grid">
+
+      <section class="checkout-white-card">
+        
+        <div class="checkout-section">
+          <h2 class="checkout-section-title">ENTER YOUR DETAILS HERE</h2>
+          <p class="checkout-section-subtitle">Please provide your contact information to complete your booking</p>
+
+          <div class="checkout-form-group">
+            <label for="customerFullName" class="checkout-label">Full Name *</label>
+            <input type="text" id="customerFullName" class="checkout-input" placeholder="e.g. John Doe" required>
+          </div>
+
+          <div class="checkout-form-group">
+            <label for="customerEmail" class="checkout-label">Email address *</label>
+            <input type="email" id="customerEmail" class="checkout-input" placeholder="e.g. johndoe@example.com" required>
+          </div>
+
+          <div class="checkout-form-group">
+            <label for="customerPhoneDigits" class="checkout-label">Mobile number *</label>
+            <div class="phone-prefix-group">
+              <div class="phone-prefix-box">07</div>
+              <input type="text" id="customerPhoneDigits" class="phone-prefix-input" placeholder="last 8 digits of your mobile number" maxlength="8" required>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 1px; background: #e2e8f0; margin: 28px 0;"></div>
+
+        <div class="checkout-section">
+          <div class="checkout-section-title">
+            <span>SELECT PAYMENT METHOD</span>
+            <span class="checkout-badge-pill">2 OPTIONS</span>
+          </div>
+
+          <div class="payment-methods-stack">
+            <div class="payment-radio-card active" id="payMethodVisa" onclick="selectPaymentMethod('CREDIT_CARD')">
+              <div class="payment-card-left">
+                <div class="payment-logo-badge">
+                  <svg width="40" height="24" viewBox="0 0 36 24" fill="none">
+                    <rect width="36" height="24" rx="4" fill="#0f172a"/>
+                    <circle cx="14" cy="12" r="7" fill="#eb001b"/>
+                    <circle cx="22" cy="12" r="7" fill="#f79e1b" fill-opacity="0.85"/>
+                  </svg>
+                </div>
+                <div class="payment-card-details">
+                  <h4>Mastercard / VISA</h4>
+                  <p>Pay securely using standard credit or debit card</p>
+                </div>
+              </div>
+              <div class="payment-checkmark-pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+
+            <div class="payment-radio-card" id="payMethodAmex" onclick="selectPaymentMethod('AMEX')">
+              <div class="payment-card-left">
+                <div class="payment-logo-badge">
+                  <svg width="40" height="24" viewBox="0 0 36 24" fill="none">
+                    <rect width="36" height="24" rx="4" fill="#006fcf"/>
+                    <path d="M6 16L10 8H13L17 16H14.5L13.5 14H9.5L8.5 16H6ZM10.3 12H12.7L11.5 9.2L10.3 12Z" fill="white"/>
+                    <path d="M18 16V8H24V10H20.5V11H23.5V13H20.5V14H24V16H18Z" fill="white"/>
+                  </svg>
+                </div>
+                <div class="payment-card-details">
+                  <h4>Nations Trust Bank / AMEX</h4>
+                  <p>Exclusive rewards & co-branded AMEX cards</p>
+                </div>
+              </div>
+              <div class="payment-checkmark-pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-terms-box">
+          <input type="checkbox" id="termsCheckbox">
+          <label for="termsCheckbox">
+            By clicking "Make Payment" you agree to the <a href="#" style="color: var(--checkout-primary-navy); font-weight: 700; text-decoration: underline;">Terms &amp; Conditions</a>.
+          </label>
+        </div>
+
+        <button type="button" id="payNowBtn" class="btn-pay-now" onclick="handlePayNowClick()" disabled>
+          PAY NOW <span id="payBtnAmountVal">LKR 1,900.00</span>
+        </button>
+
+      </section>
+
+      <aside class="checkout-sidebar">
+
+        <div class="promo-code-banner" onclick="openPromoModal()">
+          <div class="promo-banner-left" id="promoBannerText">
+            <span>🏷️</span>
+            <span>APPLY PROMO OR VOUCHER CODES</span>
+          </div>
+          <span>&gt;</span>
+        </div>
+
+        <div class="order-summary-card">
+          <div class="summary-top-row">
+            <h3 id="summaryMovieTitle" class="summary-movie-title">SPIDER-MAN: BRAND NEW DAY</h3>
+            <span id="summaryTicketBadge" class="ticket-count-badge">1 TICKETS</span>
+          </div>
+
+          <div id="summaryMetaDetails" class="summary-meta-str">
+            DOLBY ATMOS, WED, 09 SEP, 01:00 PM | SCOPE CINEMAS MULTIPLEX | SEATS: G13 | TICKETS: ODC ADULT ×1
+          </div>
+
+          <div class="summary-breakdown-divider"></div>
+
+          <div class="summary-row-item">
+            <span>Total Ticket(s) Price</span>
+            <strong id="summaryTicketPriceVal">LKR 1,900.00</strong>
+          </div>
+
+          <div class="summary-row-item" id="summaryFnbRow" style="display: none;">
+            <span>Concessions / F&amp;B Subtotal</span>
+            <strong id="summaryFnbPriceVal">LKR 0.00</strong>
+          </div>
+
+          <div class="summary-row-item" id="summaryDiscountRow" style="display: none; color: #15803d;">
+            <span>Promo Discount</span>
+            <strong id="summaryDiscountPriceVal" style="color: #15803d;">-LKR 0.00</strong>
+          </div>
+
+          <div>
+            <span class="summary-vat-tag">Bank Charges &amp; VAT Included</span>
+          </div>
+
+          <div class="summary-subtotal-row">
+            <span>SUB TOTAL</span>
+            <strong id="summarySubtotalVal">LKR 1,900.00</strong>
+          </div>
+
+          <div class="payable-amount-banner">
+            <span>PAYABLE AMOUNT:</span>
+            <strong id="summaryPayableBannerVal" class="payable-amount-val">LKR 1,900.00</strong>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <div id="promoModal" class="checkout-modal-overlay">
+    <div class="checkout-modal-card">
+      <button type="button" class="modal-close-btn" onclick="closePromoModal()">&times;</button>
+      <h3 style="font-size: 1.25rem; font-weight: 800; margin-top: 0; margin-bottom: 8px;">Apply Promo Code</h3>
+      <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Enter your discount voucher code to redeem special cinema offers.</p>
+
+      <div class="checkout-form-group">
+        <input type="text" id="promoCodeInput" class="checkout-input" placeholder="Enter promo code (e.g. SCOPE20)" style="text-transform: uppercase;">
+      </div>
+
+      <div id="promoModalMsg" style="font-size: 0.85rem; margin-bottom: 16px; font-weight: 700;"></div>
+
+      <button type="button" class="btn-pay-now" onclick="applyPromoCode()">APPLY CODE</button>
+    </div>
+  </div>
+
+  <div id="fallbackCardModal" class="checkout-modal-overlay">
+    <div class="checkout-modal-card" style="max-width: 500px;">
+      <button type="button" class="modal-close-btn" onclick="closeFallbackModal()">&times;</button>
+
+      <div class="credit-card-preview">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="card-chip"></div>
+          <strong style="font-size: 0.85rem; letter-spacing: 0.1em; color: #f5b324;">SCOPE SECURE</strong>
+        </div>
+
+        <div id="cardPreviewNumber" class="card-number-display">•••• •••• •••• ••••</div>
+
+        <div class="card-holder-exp">
+          <div>
+            <span>CARD HOLDER</span>
+            <strong id="cardPreviewName">JOHN DOE</strong>
+          </div>
+          <div>
+            <span>EXPIRES</span>
+            <strong id="cardPreviewExp">MM/YY</strong>
+          </div>
+        </div>
+      </div>
+
+      <div id="cardInputStep">
+        <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0 0 16px 0;">Cardholder Information</h3>
+
+        <div class="checkout-form-group">
+          <label class="checkout-label" for="simCardName">Cardholder Name</label>
+          <input type="text" id="simCardName" class="checkout-input" placeholder="FULL NAME ON CARD" oninput="document.getElementById('cardPreviewName').textContent = this.value.toUpperCase() || 'JOHN DOE'">
+        </div>
+
+        <div class="checkout-form-group">
+          <label class="checkout-label" for="simCardNumber">Card Number</label>
+          <input type="text" id="simCardNumber" class="checkout-input" placeholder="4000 1234 5678 9010" maxlength="19" oninput="updateCardPreviewNumber(this)">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="checkout-form-group">
+            <label class="checkout-label" for="simCardExp">Expiry Date</label>
+            <input type="text" id="simCardExp" class="checkout-input" placeholder="MM/YY" maxlength="5" oninput="updateCardPreviewExp(this)">
+          </div>
+          <div class="checkout-form-group">
+            <label class="checkout-label" for="simCardCvv">CVV Code</label>
+            <input type="password" id="simCardCvv" class="checkout-input" placeholder="•••" maxlength="4">
+          </div>
+        </div>
+
+        <button type="button" class="btn-pay-now" onclick="showOtpStep()" style="margin-top: 10px;">SUBMIT PAYMENT</button>
+      </div>
+
+      <div id="otpVerifyStep" style="display: none;">
+        <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0 0 8px 0; color: #10b981;">3D Secure Authentication</h3>
+        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">A 6-digit One Time Password (OTP) has been sent to your registered mobile number for verification.</p>
+
+        <div class="checkout-form-group">
+          <label class="checkout-label" for="otpInput">Enter 6-Digit OTP *</label>
+          <input type="text" id="otpInput" class="checkout-input" placeholder="123456" maxlength="6" style="letter-spacing: 0.3em; font-size: 1.2rem; text-align: center; font-weight: 800;">
+        </div>
+
+        <button type="button" class="btn-pay-now" onclick="verifyOtpAndPay()" style="background-color: #10b981;">VERIFY &amp; CONFIRM BOOKING</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="successModal" class="checkout-modal-overlay">
+    <div class="checkout-modal-card" style="text-align: center; max-width: 440px;">
+      <div style="width: 64px; height: 64px; background: #dcfce7; color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+
+      <h2 style="font-size: 1.5rem; font-weight: 900; margin: 0 0 6px 0; color: #0f172a;">PAYMENT SUCCESSFUL!</h2>
+      <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 20px;">Your ticket reservation is confirmed and persisted in the database.</p>
+
+      <div style="background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+        <div style="font-size: 0.78rem; font-weight: 700; color: #64748b; letter-spacing: 0.08em; text-transform: uppercase;">Booking Reference</div>
+        <strong id="successRefCode" style="font-size: 1.6rem; color: var(--checkout-primary-navy); letter-spacing: 0.1em; display: block; margin: 4px 0 12px 0;">CX-982341</strong>
+
+        <div style="font-size: 0.85rem; color: #334155; margin-bottom: 4px;"><strong id="successMovieTitle">SPIDER-MAN: BRAND NEW DAY</strong></div>
+        <div style="font-size: 0.85rem; color: #10b981; font-weight: 800;" id="successAmount">LKR 1,900.00</div>
+      </div>
+
+      <a href="../index.html" class="btn-pay-now" style="display: block; text-decoration: none; box-sizing: border-box;">RETURN TO HOME</a>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/checkout.js"></script>
+</body>
+</html>

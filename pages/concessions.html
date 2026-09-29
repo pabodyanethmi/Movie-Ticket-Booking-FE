@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food & Beverages | Scope Cinemas</title>
+  <meta name="description" content="Pre-order Food & Beverages for your movie experience at Scope Cinemas.">
+  
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/concessions.css">
+</head>
+<body class="concessions-page-body">
+
+  <header class="concessions-meta-header">
+    <div class="meta-header-container">
+      <div class="meta-left">
+        <img id="metaMoviePoster" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=100&auto=format&fit=crop&q=80" alt="Movie Poster" class="meta-poster-img">
+      </div>
+      <div class="meta-center">
+        <h1 id="metaMovieTitle" class="meta-movie-title">
+          <span>LOADING MOVIE...</span>
+          <span id="metaClassificationBadge" class="classification-badge">U</span>
+        </h1>
+        <div id="metaMovieDetails" class="meta-movie-subtitle">
+          CineX Multiplex | Hall 01 | Mon, 08 Sep, 10:00 AM | Seats: A1, A2
+        </div>
+      </div>
+      <div class="meta-right">
+        <a href="showtimes.html" class="btn-close-concessions" aria-label="Cancel and return to showtimes" title="Cancel booking">
+          &times;
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="concessions-subheader-bar">
+    <div class="subheader-container">
+      <a href="#" id="subheaderBackBtn" onclick="goBackToSeats(event)" class="subheader-back-btn">&lt; FOOD &amp; BEVERAGES</a>
+      
+      <div class="subheader-promo-text">
+        Order your meal early and save more!
+      </div>
+
+      <div class="subheader-right-group">
+        <div class="subheader-timer" id="concessionsTimerBox">
+          ⏱ TIME LEFT: <span id="concessionsTimer">05:00</span>
+        </div>
+        <button type="button" class="btn-concessions-skip" onclick="skipConcessions()">SKIP</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="concessions-main-container">
+    <div class="concessions-grid">
+
+      <section class="concessions-menu-column">
+        <div id="categoryPillsBar" class="category-pills-bar">
+          <button type="button" class="category-pill active" onclick="filterCategory('All')">All</button>
+          <button type="button" class="category-pill" onclick="filterCategory('Popcorn')">Popcorn</button>
+          <button type="button" class="category-pill" onclick="filterCategory('Hot Kitchen')">Hot Kitchen</button>
+          <button type="button" class="category-pill" onclick="filterCategory('Combo')">Combo</button>
+          <button type="button" class="category-pill" onclick="filterCategory('Desserts')">Desserts</button>
+          <button type="button" class="category-pill" onclick="filterCategory('Beverage')">Beverage</button>
+        </div>
+
+        <div id="concessionsGrid" class="concessions-card-grid fnb-scrollable-items-grid">
+          <div class="concessions-loading-spinner">Loading snacks &amp; beverages catalog...</div>
+        </div>
+      </section>
+
+      <aside class="concessions-summary-column">
+        <div class="purchase-summary-card">
+          <div class="summary-header">
+            <h2>PURCHASE SUMMARY</h2>
+          </div>
+
+          <div class="summary-ticket-section">
+            <div class="summary-row">
+              <span class="summary-row-label">Ticket(s) Price</span>
+              <strong id="summaryTicketPrice" class="summary-row-val">LKR 0.00</strong>
+            </div>
+            <div id="summaryTicketDetails" class="summary-ticket-details">
+              1 Adult(s), 0 Child(ren)
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-fnb-section">
+            <div class="fnb-section-header">
+              <span>Food &amp; Beverages</span>
+              <button type="button" class="btn-clear-all" onclick="clearCart()" title="Clear all food items">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Clear All
+              </button>
+            </div>
+
+            <div id="cartItemsList" class="cart-items-list">
+              <div class="empty-cart-msg">No food items added yet.</div>
+            </div>
+
+            <div class="summary-row fnb-subtotal-row">
+              <span>F&amp;B Sub Total:</span>
+              <strong id="summaryFnbSubtotal">LKR 0.00</strong>
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="grand-total-box">
+            <span>TOTAL AMOUNT:</span>
+            <strong id="summaryGrandTotal">LKR 0.00</strong>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="concessions-footer-bar">
+    <div class="footer-container">
+      <div id="bottomSelectionCount" class="bottom-count-text">0 item(s) selected</div>
+      <button type="button" id="proceedCheckoutBtn" class="btn-proceed-concessions" onclick="proceedToCheckout()">PROCEED</button>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/concessions.js"></script>
+</body>
+</html>
